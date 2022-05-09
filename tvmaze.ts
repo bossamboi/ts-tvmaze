@@ -5,7 +5,6 @@ const $showsList = $("#showsList");
 const $episodesArea = $("#episodesArea");
 const $episodesList = $("#episodesList");
 const $searchForm = $("#searchForm");
-const $showEpisodes = $(".Show-getEpisodes");
 
 const API_BASE_URL = "https://api.tvmaze.com";
 const DEFAULT_IMG = "https://tinyurl.com/tv-missing";
@@ -16,6 +15,13 @@ interface showInterface {
   summary: string;
   image: string;
 }
+
+interface showInterfaceAPI { show: {
+  id: number;
+  name: string;
+  summary: string;
+  image: {original: string} | null;
+}}
 
 interface Episode {
   id: number;
@@ -39,12 +45,12 @@ async function getShowsByTerm(term: string): Promise<showInterface[]> {
   // ADD: Remove placeholder & make request to TVMaze search shows API.
   const resp = await axios.get(`${API_BASE_URL}/search/shows?q=${term}`);
 
-  const shows = resp.data.map((s: any) => {
+  const shows = resp.data.map((s: showInterfaceAPI) => {
     const show = {
       id: s.show.id,
       name: s.show.name,
       summary: s.show.summary,
-      image: s.show.image.original || DEFAULT_IMG,
+      image: s.show.image?.original || DEFAULT_IMG,
     } as showInterface;
     return show;
   });
@@ -105,7 +111,7 @@ $searchForm.on("submit", async function (evt) {
 
 async function getEpisodesOfShow(id: number): Promise<Episode[]> {
   const result = await axios.get(`http://api.tvmaze.com/shows/${id}/episodes`);
-  const episodes = result.data.map((e: any) => {
+  const episodes = result.data.map((e: Episode) => {
     const episode = {
       id: e.id,
       name: e.name,
@@ -137,9 +143,9 @@ function populateEpisodes(episodes: Episode[]) {
 }
 
 /** Listener for when a episode button is clicked, gets episodes and populates DOM */
-$showsList.on("click", ".episodesBtn", async function (evt) {
+$showsList.on("click", ".episodesBtn", async function (evt: JQuery.ClickEvent) {
 
-  const $showDiv = $(evt.target).closest(".Show")!;
+  const $showDiv = $(evt.target).closest(".Show");
   const showId = $showDiv.data("showId");
   const episodes = await getEpisodesOfShow(showId);
 

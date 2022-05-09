@@ -12751,7 +12751,6 @@ var $showsList = $("#showsList");
 var $episodesArea = $("#episodesArea");
 var $episodesList = $("#episodesList");
 var $searchForm = $("#searchForm");
-var $showEpisodes = $(".Show-getEpisodes");
 var API_BASE_URL = "https://api.tvmaze.com";
 var DEFAULT_IMG = "https://tinyurl.com/tv-missing";
 // interface showImage {
@@ -12772,11 +12771,12 @@ function getShowsByTerm(term) {
                 case 1:
                     resp = _a.sent();
                     shows = resp.data.map(function (s) {
+                        var _a;
                         var show = {
                             id: s.show.id,
                             name: s.show.name,
                             summary: s.show.summary,
-                            image: s.show.image.original || DEFAULT_IMG,
+                            image: ((_a = s.show.image) === null || _a === void 0 ? void 0 : _a.original) || DEFAULT_IMG,
                         };
                         return show;
                     });
