@@ -118,7 +118,7 @@ async function getEpisodesOfShow(id: number): Promise<Episode[]> {
   return episodes;
 }
 
-/** Write a clear docstring for this function... */
+/** Appends episodes info onto DOM based on show clicked */
 
 function populateEpisodes(episodes: Episode[]) {
   $episodesList.empty();
@@ -136,6 +136,7 @@ function populateEpisodes(episodes: Episode[]) {
   }
 }
 
+/** Listener for when a episode button is clicked, gets episodes and populates DOM */
 $showsList.on("click", ".episodesBtn", async function (evt) {
 
   const $showDiv = $(evt.target).closest(".Show")!;

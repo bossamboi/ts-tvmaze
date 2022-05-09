@@ -12854,7 +12854,7 @@ function getEpisodesOfShow(id) {
         });
     });
 }
-/** Write a clear docstring for this function... */
+/** Appends episodes info onto DOM based on show clicked */
 function populateEpisodes(episodes) {
     $episodesList.empty();
     $episodesArea.show();
@@ -12864,6 +12864,7 @@ function populateEpisodes(episodes) {
         $episodesList.append($episode);
     }
 }
+/** Listener for when a episode button is clicked, gets episodes and populates DOM */
 $showsList.on("click", ".episodesBtn", function (evt) {
     return __awaiter(this, void 0, void 0, function () {
         var $showDiv, showId, episodes;
